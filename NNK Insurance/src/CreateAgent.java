@@ -13,6 +13,11 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 
@@ -180,30 +185,142 @@ public class CreateAgent extends JFrame {
 				String Phone = phone.getText();
 				String Email = email.getText();
 				
-				String emailfile = "email_list";
+				
 				
 				Random r = new Random(System.currentTimeMillis());
 				String randID = Integer.toString((10000 + r.nextInt(20000)));
 				String netID;
+				String aemail = frstname;
+				
+				// If agent entered in middlename
+				// Set the email to firstname.middlenameinitial.lastname@nnk.com
+				// Otherwise just firstname.lastname@nnk.com
 				if(mdlename.equals("")) {
 					netID = String.valueOf(frstname.charAt(0))  + String.valueOf(lstname.charAt(0));
+					aemail += lstname + "@nnk.com";
 				}
 				else{
 					netID = String.valueOf(frstname.charAt(0))  + String.valueOf(mdlename.charAt(0))+String.valueOf(lstname.charAt(0));
+					aemail+= String.valueOf(mdlename.charAt(0)) + lstname + "@nnk.com";
 				}
+				
+				// fully netID
+				String fnetID = netID + randID;
 				
 				
 				// set netID/email address
-				loginID.setText(netID + randID);
-				emailaddr.setText(netID);
+				loginID.setText(fnetID);
+				emailaddr.setText(aemail);
+				
+				
+				//Netpass / Email pass var
+				String npass = Integer.toString(10000 + r.nextInt(20000));
+				String epass = Integer.toString(10000 + r.nextInt(20000));
 				
 				// set net/email password
-				netpass.setText(Integer.toString(10000 + r.nextInt(20000)));
-				emailpassword.setText(Integer.toString(10000 + r.nextInt(20000)));
+				netpass.setText(npass);
+				emailpassword.setText(epass);
 				
 				
 				
 				// Load object from existing profile
+				String emailfile = "email";
+				String agentfile = "agent";
+				
+				ArrayList <NewEmail> newemail = new ArrayList<>();
+				NewEmail mail = new NewEmail(aemail, epass);
+				
+				// Try to pull the file name "email"
+				try {
+					// email file exists
+					FileInputStream fis = new FileInputStream(emailfile);
+					ObjectInputStream ois = new ObjectInputStream(fis);
+					
+					newemail = (ArrayList<NewEmail>) ois.readObject();
+					
+					ois.close();
+					fis.close();
+					
+					// add to that file
+					FileOutputStream fos = new FileOutputStream(emailfile);
+		            ObjectOutputStream oos = new ObjectOutputStream(fos);
+		            
+		            oos.writeObject(mail);
+		            
+		            oos.flush();
+		            oos.close();
+		            fos.close();
+		            
+					
+				}catch(IOException ioe) {
+					// email file not exists
+					try {
+						FileOutputStream fos = new FileOutputStream(emailfile);
+			            ObjectOutputStream oos = new ObjectOutputStream(fos);
+			            
+			            oos.writeObject(mail);
+			            
+			            oos.flush();
+			            oos.close();
+			            fos.close();
+					}catch(IOException exception) {
+						//Error cannot add to file
+						System.out.println("Failed! Cannot add new mail to email file.");
+						
+					}	
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					System.out.println("NewEmail Class not Found");
+				}
+				
+				
+				
+				
+				ArrayList <NewAgent> newagent = new ArrayList<>();
+				NewAgent agent = new NewAgent(frstname, lstname, mdlename, Age, Phone, Email, fnetID, npass, aemail, epass);
+				
+				
+				// Try to pull the file name "agent"
+				try {
+					// agent file exists
+					FileInputStream fis = new FileInputStream(agentfile);
+					ObjectInputStream ois = new ObjectInputStream(fis);
+					newagent = (ArrayList<NewAgent>) ois.readObject();
+					
+					fis.close();
+					ois.close();
+					
+					// add to agent file
+					FileOutputStream fos = new FileOutputStream(agentfile);
+					ObjectOutputStream oos = new ObjectOutputStream(fos);
+					
+					oos.writeObject(agent);
+					
+					oos.flush();
+					oos.close();
+					fos.close();
+					
+					
+					
+				}catch(IOException exception) {
+					// agent file doesn't exists.
+					try {
+						FileOutputStream fos = new FileOutputStream(agentfile);
+						ObjectOutputStream oos = new ObjectOutputStream(fos);
+						
+						oos.writeObject(agent);
+						
+						oos.flush();
+						oos.close();
+						fos.close();
+					}catch(IOException ioe) {
+						System.out.println("Failed! Cannot add new agent into agent file");
+					}
+					
+				}catch(ClassNotFoundException e1) {
+					System.out.println("NewAgent Class not Found");
+				}
+				
 				
 				
 				
