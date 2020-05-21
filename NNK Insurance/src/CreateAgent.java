@@ -1,5 +1,4 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -13,13 +12,17 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 import java.awt.event.ActionEvent;
+import java.util.Properties;
 
 public class CreateAgent extends JFrame {
 
@@ -52,7 +55,7 @@ public class CreateAgent extends JFrame {
 	 */
 	public CreateAgent() throws Exception{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 588, 393);
+		setBounds(100, 100, 620, 393);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -65,6 +68,7 @@ public class CreateAgent extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		firstname = new JTextField();
+		firstname.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		firstname.setBounds(52, 76, 116, 22);
 		contentPane.add(firstname);
 		firstname.setColumns(10);
@@ -75,7 +79,7 @@ public class CreateAgent extends JFrame {
 		contentPane.add(lblNewLabel_1);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(0, 307, 569, 39);
+		panel_2.setBounds(0, 307, 602, 39);
 		contentPane.add(panel_2);
 		panel_2.setBackground(new Color(204, 175, 175));
 		
@@ -85,7 +89,8 @@ public class CreateAgent extends JFrame {
 		contentPane.add(lblNewLabel_2);
 		
 		lastname = new JTextField();
-		lastname.setBounds(388, 76, 116, 22);
+		lastname.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lastname.setBounds(388, 76, 136, 22);
 		contentPane.add(lastname);
 		lastname.setColumns(10);
 		
@@ -95,7 +100,8 @@ public class CreateAgent extends JFrame {
 		contentPane.add(lblNewLabel_3);
 		
 		middlename = new JTextField();
-		middlename.setBounds(216, 76, 116, 22);
+		middlename.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		middlename.setBounds(216, 76, 136, 22);
 		contentPane.add(middlename);
 		middlename.setColumns(10);
 		
@@ -105,6 +111,7 @@ public class CreateAgent extends JFrame {
 		contentPane.add(lblNewLabel_4);
 		
 		age = new JTextField();
+		age.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		age.setBounds(52, 150, 116, 22);
 		contentPane.add(age);
 		age.setColumns(10);
@@ -115,7 +122,8 @@ public class CreateAgent extends JFrame {
 		contentPane.add(lblNewLabel_5);
 		
 		phone = new JTextField();
-		phone.setBounds(216, 150, 116, 22);
+		phone.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		phone.setBounds(216, 150, 136, 22);
 		contentPane.add(phone);
 		phone.setColumns(10);
 		
@@ -125,7 +133,8 @@ public class CreateAgent extends JFrame {
 		contentPane.add(lblNewLabel_6);
 		
 		email = new JTextField();
-		email.setBounds(388, 150, 116, 22);
+		email.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		email.setBounds(388, 150, 136, 22);
 		contentPane.add(email);
 		email.setColumns(10);
 		
@@ -137,11 +146,11 @@ public class CreateAgent extends JFrame {
 		btnNewButton.setBackground(new Color(183, 239, 205));
 		
 		JLabel loginID = new JLabel("");
-		loginID.setBounds(163, 208, 117, 16);
+		loginID.setBounds(163, 208, 146, 16);
 		contentPane.add(loginID);
 		
 		JLabel lginpss = new JLabel("Login Password:");
-		lginpss.setBounds(292, 208, 97, 16);
+		lginpss.setBounds(321, 208, 97, 16);
 		contentPane.add(lginpss);
 		
 		JLabel lginID = new JLabel("LoginID:");
@@ -149,7 +158,7 @@ public class CreateAgent extends JFrame {
 		contentPane.add(lginID);
 		
 		JLabel netpass = new JLabel("");
-		netpass.setBounds(401, 208, 116, 16);
+		netpass.setBounds(430, 208, 116, 16);
 		contentPane.add(netpass);
 		
 		JLabel lblNewLabel_8 = new JLabel("Email Address:");
@@ -158,15 +167,15 @@ public class CreateAgent extends JFrame {
 		lblNewLabel_8.setVisible(false);
 		
 		JLabel emailaddr = new JLabel("");
-		emailaddr.setBounds(173, 237, 107, 16);
+		emailaddr.setBounds(173, 237, 136, 16);
 		contentPane.add(emailaddr);
 		
 		JLabel emailpssrd = new JLabel("Email Password:");
-		emailpssrd.setBounds(292, 240, 97, 16);
+		emailpssrd.setBounds(321, 237, 97, 16);
 		contentPane.add(emailpssrd);
 		
 		JLabel emailpassword = new JLabel("");
-		emailpassword.setBounds(401, 240, 116, 16);
+		emailpassword.setBounds(430, 237, 116, 16);
 		contentPane.add(emailpassword);
 		emailpssrd.setVisible(false);
 		lginID.setVisible(false);
@@ -190,18 +199,18 @@ public class CreateAgent extends JFrame {
 				Random r = new Random(System.currentTimeMillis());
 				String randID = Integer.toString((10000 + r.nextInt(20000)));
 				String netID;
-				String aemail = frstname;
+				String aemail = frstname.toLowerCase();
 				
 				// If agent entered in middlename
 				// Set the email to firstname.middlenameinitial.lastname@nnk.com
 				// Otherwise just firstname.lastname@nnk.com
 				if(mdlename.equals("")) {
-					netID = String.valueOf(frstname.charAt(0))  + String.valueOf(lstname.charAt(0));
-					aemail += lstname + "@nnk.com";
+					netID = String.valueOf(frstname.charAt(0)).toLowerCase()  + String.valueOf(lstname.charAt(0)).toLowerCase();
+					aemail += lstname.toLowerCase() + "@nnk.com";
 				}
 				else{
-					netID = String.valueOf(frstname.charAt(0))  + String.valueOf(mdlename.charAt(0))+String.valueOf(lstname.charAt(0));
-					aemail+= String.valueOf(mdlename.charAt(0)) + lstname + "@nnk.com";
+					netID = String.valueOf(frstname.charAt(0)).toLowerCase()  + String.valueOf(mdlename.charAt(0)).toLowerCase() + String.valueOf(lstname.charAt(0)).toLowerCase();
+					aemail+= String.valueOf(mdlename.charAt(0)).toLowerCase() + lstname.toLowerCase() + "@nnk.com";
 				}
 				
 				// fully netID
@@ -224,104 +233,94 @@ public class CreateAgent extends JFrame {
 				
 				
 				// Load object from existing profile
-				String emailfile = "email";
 				String agentfile = "agent";
-				
-				ArrayList <NewEmail> newemail = new ArrayList<>();
-				NewEmail mail = new NewEmail(aemail, epass);
-				
-				// Try to pull the file name "email"
-				try {
-					// email file exists
-					FileInputStream fis = new FileInputStream(emailfile);
-					ObjectInputStream ois = new ObjectInputStream(fis);
-					
-					newemail = (ArrayList<NewEmail>) ois.readObject();
-					
-					ois.close();
-					fis.close();
-					
-					// add to that file
-					FileOutputStream fos = new FileOutputStream(emailfile);
-		            ObjectOutputStream oos = new ObjectOutputStream(fos);
-		            
-		            oos.writeObject(mail);
-		            
-		            oos.flush();
-		            oos.close();
-		            fos.close();
-		            
-					
-				}catch(IOException ioe) {
-					// email file not exists
-					try {
-						FileOutputStream fos = new FileOutputStream(emailfile);
-			            ObjectOutputStream oos = new ObjectOutputStream(fos);
-			            
-			            oos.writeObject(mail);
-			            
-			            oos.flush();
-			            oos.close();
-			            fos.close();
-					}catch(IOException exception) {
-						//Error cannot add to file
-						System.out.println("Failed! Cannot add new mail to email file.");
-						
-					}	
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					System.out.println("NewEmail Class not Found");
-				}
-				
-				
 				
 				
 				ArrayList <NewAgent> newagent = new ArrayList<>();
-				NewAgent agent = new NewAgent(frstname, lstname, mdlename, Age, Phone, Email, fnetID, npass, aemail, epass);
-				
-				
+			
 				// Try to pull the file name "agent"
 				try {
 					// agent file exists
 					FileInputStream fis = new FileInputStream(agentfile);
 					ObjectInputStream ois = new ObjectInputStream(fis);
+					
 					newagent = (ArrayList<NewAgent>) ois.readObject();
 					
 					fis.close();
 					ois.close();
 					
-					// add to agent file
-					FileOutputStream fos = new FileOutputStream(agentfile);
-					ObjectOutputStream oos = new ObjectOutputStream(fos);
-					
-					oos.writeObject(agent);
-					
-					oos.flush();
-					oos.close();
-					fos.close();
-					
-					
-					
 				}catch(IOException exception) {
 					// agent file doesn't exists.
-					try {
-						FileOutputStream fos = new FileOutputStream(agentfile);
-						ObjectOutputStream oos = new ObjectOutputStream(fos);
-						
-						oos.writeObject(agent);
-						
-						oos.flush();
-						oos.close();
-						fos.close();
-					}catch(IOException ioe) {
-						System.out.println("Failed! Cannot add new agent into agent file");
-					}
+					System.out.println("Agent File doesn't exists");
 					
 				}catch(ClassNotFoundException e1) {
 					System.out.println("NewAgent Class not Found");
 				}
 				
+				NewAgent agent = new NewAgent(frstname, lstname, mdlename, Age, Phone, Email, fnetID, npass, aemail, epass);
+				newagent.add(agent);
 				
+				try {
+					// add to agent file
+					FileOutputStream fos = new FileOutputStream(agentfile);
+					ObjectOutputStream oos = new ObjectOutputStream(fos);
+					
+					oos.writeObject(newagent);
+					
+					oos.flush();
+					oos.close();
+					fos.close();
+				}catch(IOException ioe) {
+					System.out.println("Create Profile Failed");
+				}
+				
+				
+				// Agent email database.
+				Properties email_prop = new Properties();
+				try{
+					// Email database exists
+					InputStream input = new FileInputStream("email.properties");
+					
+					// load a properties file
+					email_prop.load(input);
+				}catch(IOException ioe) {
+					// Properties file for email database doesn't exists.
+					
+				}
+			
+				try {
+					OutputStream email_output = new FileOutputStream("email.properties");
+					
+					email_prop.setProperty(aemail, epass);
+					
+					email_prop.store(email_output, null);
+				} catch (IOException e2) {
+					System.out.println("Failed to store email to the database");
+				}
+				
+				// NetID database.
+				Properties net_prop = new Properties();
+				try {
+					InputStream input = new FileInputStream("net.properties");
+					
+					
+					// load net properties file
+					net_prop.load(input);
+					
+					
+				}catch(IOException ioe) {
+					// Properties file for net database doesn't exists
+				}
+				
+				try {
+					OutputStream net_output = new FileOutputStream("net.properties");
+					net_prop.setProperty(fnetID, npass);
+					
+					net_prop.store(net_output, null);
+					
+				}catch(IOException ioe) {
+					System.out.println("Failed to store net to the database");
+				}
 				
 				
 			}
