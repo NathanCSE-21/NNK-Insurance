@@ -222,7 +222,7 @@ public class CreateAgent extends JFrame {
 				emailaddr.setText(aemail);
 				
 				
-				//Netpass / Email pass var
+				//Netpass / Email pass variable.
 				String npass = Integer.toString(10000 + r.nextInt(20000));
 				String epass = Integer.toString(10000 + r.nextInt(20000));
 				
@@ -232,98 +232,120 @@ public class CreateAgent extends JFrame {
 				
 				
 				
-				// Load object from existing profile
-				String agentfile = "agent";
+				// Agent information database.
+				agentdatabase(frstname,  
+						lstname,  
+						mdlename,  
+						Age,  
+						Phone,  
+						Email,  
+						fnetID,  
+						npass,  
+						aemail,  
+						epass);
 				
-				
-				ArrayList <NewAgent> newagent = new ArrayList<>();
-			
-				// Try to pull the file name "agent"
-				try {
-					// agent file exists
-					FileInputStream fis = new FileInputStream(agentfile);
-					ObjectInputStream ois = new ObjectInputStream(fis);
-					
-					newagent = (ArrayList<NewAgent>) ois.readObject();
-					
-					fis.close();
-					ois.close();
-					
-				}catch(IOException exception) {
-					// agent file doesn't exists.
-					System.out.println("Agent File doesn't exists");
-					
-				}catch(ClassNotFoundException e1) {
-					System.out.println("NewAgent Class not Found");
-				}
-				
-				NewAgent agent = new NewAgent(frstname, lstname, mdlename, Age, Phone, Email, fnetID, npass, aemail, epass);
-				newagent.add(agent);
-				
-				try {
-					// add to agent file
-					FileOutputStream fos = new FileOutputStream(agentfile);
-					ObjectOutputStream oos = new ObjectOutputStream(fos);
-					
-					oos.writeObject(newagent);
-					
-					oos.flush();
-					oos.close();
-					fos.close();
-				}catch(IOException ioe) {
-					System.out.println("Create Profile Failed");
-				}
 				
 				
 				// Agent email database.
-				Properties email_prop = new Properties();
-				try{
-					// Email database exists
-					InputStream input = new FileInputStream("email.properties");
-					
-					// load a properties file
-					email_prop.load(input);
-				}catch(IOException ioe) {
-					// Properties file for email database doesn't exists.
-					
-				}
-			
-				try {
-					OutputStream email_output = new FileOutputStream("email.properties");
-					
-					email_prop.setProperty(aemail, epass);
-					
-					email_prop.store(email_output, null);
-				} catch (IOException e2) {
-					System.out.println("Failed to store email to the database");
-				}
+				emaildatabase(aemail, epass);
 				
 				// NetID database.
-				Properties net_prop = new Properties();
-				try {
-					InputStream input = new FileInputStream("net.properties");
-					
-					
-					// load net properties file
-					net_prop.load(input);
-					
-					
-				}catch(IOException ioe) {
-					// Properties file for net database doesn't exists
-				}
-				
-				try {
-					OutputStream net_output = new FileOutputStream("net.properties");
-					net_prop.setProperty(fnetID, npass);
-					
-					net_prop.store(net_output, null);
-					
-				}catch(IOException ioe) {
-					System.out.println("Failed to store net to the database");
-				}
+				netdatabase(fnetID,npass);
 				
 				
 			}
 		});
+	}
+	
+	private void agentdatabase(String frstname, String lstname, String mdlename, String Age, String Phone, String Email, String fnetID, String npass, String aemail, String epass) {
+		String agentfile = "agent";
+		
+		
+		ArrayList <NewAgent> newagent = new ArrayList<>();
+	
+		// Try to pull the file name "agent"
+		try {
+			// agent file exists
+			FileInputStream fis = new FileInputStream(agentfile);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			
+			newagent = (ArrayList<NewAgent>) ois.readObject();
+			
+			fis.close();
+			ois.close();
+			
+		}catch(IOException exception) {
+			// agent file doesn't exists.
+			//System.out.println("Agent File doesn't exists");
+			
+		}catch(ClassNotFoundException e1) {
+			System.out.println("NewAgent Class not Found");
+		}
+		
+		NewAgent agent = new NewAgent(frstname, lstname, mdlename, Age, Phone, Email, fnetID, npass, aemail, epass);
+		newagent.add(agent);
+		
+		try {
+			// add to agent file
+			FileOutputStream fos = new FileOutputStream(agentfile);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			
+			oos.writeObject(newagent);
+			
+			oos.flush();
+			oos.close();
+			fos.close();
+		}catch(IOException ioe) {
+			System.out.println("Create Profile Failed");
+		}
+	}
+	
+	private void emaildatabase (String aemail, String epass) {
+		Properties email_prop = new Properties();
+		try{
+			// Email database exists
+			InputStream input = new FileInputStream("email.properties");
+			
+			// load a properties file
+			email_prop.load(input);
+		}catch(IOException ioe) {
+			// Properties file for email database doesn't exists.
+			
+		}
+	
+		try {
+			OutputStream email_output = new FileOutputStream("email.properties");
+			
+			email_prop.setProperty(aemail, epass);
+			
+			email_prop.store(email_output, null);
+		} catch (IOException e2) {
+			System.out.println("Failed to store email to the database");
+		}
+	}
+	
+	private void netdatabase(String fnetID, String npass) {
+		Properties net_prop = new Properties();
+		try {
+			InputStream input = new FileInputStream("net.properties");
+			
+			
+			// load net properties file
+			net_prop.load(input);
+			
+			
+		}catch(IOException ioe) {
+			// Properties file for net database doesn't exists
+		}
+		
+		try {
+			OutputStream net_output = new FileOutputStream("net.properties");
+			net_prop.setProperty(fnetID, npass);
+			
+			net_prop.store(net_output, null);
+			
+		}catch(IOException ioe) {
+			System.out.println("Failed to store net to the database");
+		}
 	}
 }

@@ -55,6 +55,19 @@ public class Admin extends JFrame {
 		panel.setBackground(new Color(54,54,54));
 		
 		JButton create = new JButton("Create Agent");
+		create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				CreateAgent newagent = null;
+				try {
+					newagent = new CreateAgent();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				newagent.setVisible(true);
+			}
+		});
 		create.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		create.setBackground(new Color(245, 255, 250));
 		create.setBounds(135, 55, 135, 25);
