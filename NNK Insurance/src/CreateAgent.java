@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Point;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
+import javax.swing.ImageIcon;
 
 public class CreateAgent extends JFrame {
 
@@ -33,12 +36,12 @@ public class CreateAgent extends JFrame {
 	private JTextField age;
 	private JTextField phone;
 	private JTextField email;
-
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			
 			public void run() {
 				try {
 					CreateAgent frame = new CreateAgent();
@@ -60,7 +63,7 @@ public class CreateAgent extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		contentPane.setBackground(new Color(248, 243, 235));
+		contentPane.setBackground(new Color(247,247,247));
 		
 		JLabel lblNewLabel = new JLabel("Create Agent");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -177,6 +180,22 @@ public class CreateAgent extends JFrame {
 		JLabel emailpassword = new JLabel("");
 		emailpassword.setBounds(430, 237, 116, 16);
 		contentPane.add(emailpassword);
+		
+		JButton backBtn = new JButton("Back");
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Admin admin = new Admin();
+				admin.setVisible(true);
+				
+			}
+		});
+		backBtn.setBounds(12, 14, 69, 25);
+		contentPane.add(backBtn);
+		backBtn.setFocusPainted(false);
+		backBtn.setBackground(new Color(212,243,239));
+		
+		
 		emailpssrd.setVisible(false);
 		lginID.setVisible(false);
 		lginpss.setVisible(false);

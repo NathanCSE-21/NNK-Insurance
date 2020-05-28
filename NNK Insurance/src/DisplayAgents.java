@@ -10,6 +10,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,12 +19,14 @@ import java.util.ArrayList;
 
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.JButton;
 
 public class DisplayAgents extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
 	private JPanel panel_1;
+	private JButton backBtn;
 
 	/**
 	 * Launch the application.
@@ -50,14 +54,12 @@ public class DisplayAgents extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		contentPane.setBackground(new Color(130,115,151));
+		contentPane.setBackground(new Color(59,105,120));
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(97, 79, 1213, 417);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
-		table.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		
 		String agentfile = "agent";
 		ArrayList <NewAgent> newagent = new ArrayList<>();
@@ -107,12 +109,8 @@ public class DisplayAgents extends JFrame {
 		
 		
 		table = new JTable(tableModel);
-		
-		//table.setModel(new DefaultTableModel(
-		//	new Object[][] {
-		//	},
-		//	col
-		//));
+		table.setRowSelectionAllowed(false);
+				
 		table.getColumnModel().getColumn(0).setPreferredWidth(30);
 		table.getColumnModel().getColumn(1).setPreferredWidth(30);
 		table.getColumnModel().getColumn(2).setPreferredWidth(30);
@@ -125,9 +123,11 @@ public class DisplayAgents extends JFrame {
 		table.getColumnModel().getColumn(9).setPreferredWidth(30);
 		scrollPane.setViewportView(table);
 		table.setBackground(new Color(52,116,116));
+		table.setForeground(new Color(255,255,255));
 		table.setShowGrid(false);
 		table.setBorder(null);
 		table.getTableHeader().setReorderingAllowed(false);
+		table.setEnabled(false);
 		
 		
 		JPanel panel = new JPanel();
@@ -139,7 +139,22 @@ public class DisplayAgents extends JFrame {
 		panel_1.setBounds(0, 0, 32, 496);
 		contentPane.add(panel_1);
 		panel_1.setBackground(new Color(27,27,47));
-
+		
+		
+		backBtn = new JButton("Back");
+		backBtn.setBounds(105, 14, 80, 25);
+		backBtn.setFocusPainted(false);
+		backBtn.setBackground(new Color(255,255,255));
+		contentPane.add(backBtn);
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Admin admin = new Admin();
+				admin.setVisible(true);
+				
+			}
+		});
+		
 			
 	}
 	

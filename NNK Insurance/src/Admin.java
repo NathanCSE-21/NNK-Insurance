@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Point;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -36,7 +38,7 @@ public class Admin extends JFrame {
 	 */
 	public Admin() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 318);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(95, 158, 160));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -50,7 +52,7 @@ public class Admin extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 211, 432, 42);
+		panel.setBounds(0, 229, 432, 42);
 		contentPane.add(panel);
 		panel.setBackground(new Color(54,54,54));
 		
@@ -70,30 +72,43 @@ public class Admin extends JFrame {
 		});
 		create.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		create.setBackground(new Color(245, 255, 250));
-		create.setBounds(135, 55, 135, 25);
+		create.setBounds(135, 45, 135, 35);
 		contentPane.add(create);
 		create.setFocusPainted(false);
 		
 		JButton display = new JButton("Display Agents");
+		display.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DisplayAgents display = new DisplayAgents();
+				display.setVisible(true);
+			}
+		});
 		display.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		display.setBounds(135, 93, 135, 25);
+		display.setBounds(135, 90, 135, 35);
 		contentPane.add(display);
 		display.setBackground(new Color(245, 255, 250));
 		display.setFocusPainted(false);
 		
-		JButton find = new JButton("Find Agent");
+		JButton find = new JButton("Find/Edit Agent");
+		find.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				FindAgent agent = new FindAgent();
+				agent.setVisible(true);				
+			}
+		});
 		find.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		find.setBounds(135, 131, 135, 25);
+		find.setBounds(135, 135, 135, 35);
 		contentPane.add(find);
 		find.setBackground(new Color(245, 255, 250));
 		find.setFocusPainted(false);
 		
-		JButton edit = new JButton("Edit Agent");
-		edit.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		edit.setBounds(135, 169, 135, 25);
-		contentPane.add(edit);
-		edit.setBackground(new Color(245, 255, 250));
-		edit.setFocusPainted(false);
+		JButton change = new JButton("Change NetPass");
+		change.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		change.setBounds(135, 180, 135, 35);
+		contentPane.add(change);
+		change.setBackground(new Color(245, 255, 250));
+		change.setFocusPainted(false);
 	}
 
 }
