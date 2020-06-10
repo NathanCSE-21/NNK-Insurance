@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import java.awt.*;
@@ -12,6 +14,11 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class Main extends JFrame {
@@ -19,6 +26,9 @@ public class Main extends JFrame {
 	private JPanel contentPane;
 	private JTextField username;
 	private JPasswordField password;
+	
+	private ArrayList <NewClient> newclient = new ArrayList<>(); 
+	private ArrayList <NewAgent> newagent = new ArrayList<>(); 
 
 	/**
 	 * Launch the application.
@@ -93,6 +103,13 @@ public class Main extends JFrame {
 		contentPane.add(lblNewLabel_5);
 		
 		JButton register = new JButton("Start Quote");
+		register.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				ClientForm cf = new ClientForm();
+				cf.setVisible(true);
+			}
+		});
 		register.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		register.setForeground(Color.BLACK);
 		register.setBounds(604, 401, 112, 40);
@@ -106,10 +123,99 @@ public class Main extends JFrame {
 				String usrname = username.getText();
 				String passwrd = password.getText();
 				
+				// admin login
 				if(usrname.equals("admin") && passwrd.equals("password")) {
 					dispose();
 					Admin frame = new Admin();
 					frame.setVisible(true);
+				}
+				
+				// Agent or Client login
+				else {
+					// Client
+					if(usrname.charAt(0) == 'C') {
+						// Pull from Client file
+						String client_file = "client";
+						try {
+							FileInputStream fis = new FileInputStream(client_file);
+							ObjectInputStream ois = new ObjectInputStream(fis);
+						
+							
+							newclient = (ArrayList) ois.readObject();
+							ois.close();
+							fis.close();
+							
+						}catch(IOException ioe) {
+							// client file does not exist
+							// do nothing for now 
+							// assuming that data will be populated by the time we test this.
+							
+						}
+						catch(ClassNotFoundException cne) {
+							// Do nothing for now
+							JOptionPane.showMessageDialog(null, "NewClient Class is not Found");
+						}
+						
+						for(NewClient client: newclient) {
+							// usrname and password matched.
+							if(client.netID.equals(usrname) && client.netpass.equals(passwrd)) {
+								if(client.status.equals("Pending")) {
+									dispose();
+									Pending pending = new Pending(client.lastname);
+									pending.setVisible(true);
+								}
+								else {
+									// Something else
+									
+								}
+							}
+						}
+					}
+					
+					// Agent
+					else {
+						String filename = "agent";
+						
+						try {
+							FileInputStream fis = new FileInputStream(filename);
+							ObjectInputStream ois = new ObjectInputStream(fis);
+						
+							
+							newagent = (ArrayList) ois.readObject();
+							ois.close();
+							fis.close();
+							
+						}catch(IOException ioe) {
+							// agent file does not exist
+							// do nothing for now 
+							// assuming that data will be populated by the time we test this.
+							
+						}
+						catch(ClassNotFoundException cne) {
+							// Do nothing for now
+							JOptionPane.showMessageDialog(null, "NewClient Class is not Found");
+						}
+						
+						int idx =0;
+						for(NewAgent agent: newagent) {
+							// usrname and password matched.
+							if(agent.netid.equals(usrname) && agent.netpassword.equals(passwrd)) {
+								// Found
+								break;
+							}
+							idx++;
+						}
+						
+						try {
+							AgentDashBoard adb = new AgentDashBoard(newagent, idx);
+							dispose();
+							adb.setVisible(true);
+						} catch (ParseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+					}
 				}
 			}
 		});

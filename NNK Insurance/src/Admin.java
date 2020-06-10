@@ -52,7 +52,7 @@ public class Admin extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 229, 432, 42);
+		panel.setBounds(0, 220, 432, 51);
 		contentPane.add(panel);
 		panel.setBackground(new Color(54,54,54));
 		
@@ -72,7 +72,7 @@ public class Admin extends JFrame {
 		});
 		create.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		create.setBackground(new Color(245, 255, 250));
-		create.setBounds(135, 45, 135, 35);
+		create.setBounds(135, 50, 135, 35);
 		contentPane.add(create);
 		create.setFocusPainted(false);
 		
@@ -84,7 +84,7 @@ public class Admin extends JFrame {
 			}
 		});
 		display.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		display.setBounds(135, 90, 135, 35);
+		display.setBounds(135, 100, 135, 35);
 		contentPane.add(display);
 		display.setBackground(new Color(245, 255, 250));
 		display.setFocusPainted(false);
@@ -98,17 +98,10 @@ public class Admin extends JFrame {
 			}
 		});
 		find.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		find.setBounds(135, 135, 135, 35);
+		find.setBounds(135, 150, 135, 35);
 		contentPane.add(find);
 		find.setBackground(new Color(245, 255, 250));
 		find.setFocusPainted(false);
-		
-		JButton change = new JButton("Change NetPass");
-		change.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		change.setBounds(135, 180, 135, 35);
-		contentPane.add(change);
-		change.setBackground(new Color(245, 255, 250));
-		change.setFocusPainted(false);
 	}
 
 }
