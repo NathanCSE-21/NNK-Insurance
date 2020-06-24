@@ -367,4 +367,6 @@ public class CreateAgent extends JFrame {
 			System.out.println("Failed to store net to the database");
 		}
 	}
+	
+	
 }

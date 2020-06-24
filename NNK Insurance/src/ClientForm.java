@@ -636,7 +636,7 @@ public class ClientForm extends JFrame {
 				newclient.add(client);
 				
 				try {
-					// add to agent file
+					// add to client file
 					FileOutputStream fos = new FileOutputStream(client_file);
 					ObjectOutputStream oos = new ObjectOutputStream(fos);
 					

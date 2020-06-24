@@ -32,15 +32,50 @@ public class AgentDashBoard extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField newpassword;
-	private JPanel ov = new JPanel();
 	private JPanel mc = new JPanel();
 	private JPanel c = new JPanel();
 	private JPanel st = new JPanel();
-	private String current_panel = "overview";
-	private JPanel overview = new JPanel();
+	private String current_panel = "mc";
 	private JPanel changepass = new JPanel();
 	private JPanel applications = new JPanel();
-	private double current_page = 0;
+	private double current_page = 1;
+	private JTextField first1;
+	private JTextField last1;
+	private JTextField dob1;
+	private JTextField make1;
+	private JTextField year1;
+	private JTextField cl1;
+	private JTextField first2;
+	private JTextField last2;
+	private JTextField dob2;
+	private JTextField make2;
+	private JTextField year2;
+	private JTextField cl2;
+	private JTextField first3;
+	private JTextField last3;
+	private JTextField dob3;
+	private JTextField make3;
+	private JTextField year3;
+	private JTextField cl3;
+	private JTextField first4;
+	private JTextField last4;
+	private JTextField dob4;
+	private JTextField make4;
+	private JTextField year4;
+	private JTextField cl4;
+	private JTextField first5;
+	private JTextField last5;
+	private JTextField dob5;
+	private JTextField make5;
+	private JTextField year5;
+	private JTextField cl5;
+	private int idx_5 =-1; 
+	private int idx_4 =-1; 
+	private int idx_3 =-1; 
+	private int idx_2 =-1;
+	private int idx_1 = -1;
+	
+	private ArrayList <NewClient> newclient = new ArrayList<>();
 	
 	/**
 	 * Launch the application.
@@ -64,7 +99,7 @@ public class AgentDashBoard extends JFrame {
 	 */
 	public AgentDashBoard(ArrayList<NewAgent> newagent, int idx) throws ParseException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 886, 541);
+		setBounds(100, 100, 1045, 541);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBackground(new Color(255,255,255));
@@ -73,12 +108,12 @@ public class AgentDashBoard extends JFrame {
 		
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(252, 0, 616, 494);
+		layeredPane.setBounds(252, 0, 775, 494);
 		layeredPane.setBackground(new Color(199,0,57));
 		contentPane.add(layeredPane);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 616, 88);
+		panel.setBounds(0, 0, 774, 88);
 		panel.setBackground(new Color(199,0,57));;
 		
 		layeredPane.add(panel);
@@ -91,13 +126,7 @@ public class AgentDashBoard extends JFrame {
 		panel.add(timer);
 		
 		
-		overview.setBounds(1000, 87, 616, 407);
-		layeredPane.add(overview);
-		overview.setBackground(new Color(57,62,70));
-		overview.setLayout(null);
-		
-		
-		applications.setBounds(0, 87, 616, 407);
+		applications.setBounds(0, 87, 774, 407);
 		layeredPane.add(applications);
 		applications.setBackground(new Color(48,57,96));
 		applications.setLayout(null);
@@ -105,28 +134,34 @@ public class AgentDashBoard extends JFrame {
 		JLabel size = new JLabel("");
 		size.setForeground(Color.WHITE);
 		size.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		size.setBounds(270, 345, 97, 25);
+		size.setBounds(361, 344, 56, 25);
 		
 		applications.add(size);
 		JButton next = new JButton("NEXT");
 		next.setForeground(Color.DARK_GRAY);
-		next.setBounds(400, 345, 97, 25);
+		next.setBounds(451, 346, 97, 25);
 		next.setFocusPainted(false);
 		JButton back = new JButton("BACK");
 		back.setForeground(Color.DARK_GRAY);
-		back.setBounds(126, 345, 97, 25);
+		back.setBounds(203, 345, 97, 25);
 		back.setFocusPainted(false);
-JLabel fn = new JLabel("First Name");
+		JLabel fn = new JLabel("First Name");
+		fn.setForeground(new Color(255,132,124));
 		fn.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		fn.setBounds(25, 46, 92, 16);
+		fn.setBounds(35, 46, 92, 16);
 		applications.add(fn);
 		
 		JLabel lblNewLabel_11 = new JLabel("Last Name");
 		lblNewLabel_11.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_11.setBounds(150, 47, 92, 16);
-		applications.add(lblNewLabel_11);
+		JLabel ln = new JLabel("Last Name");
+		ln.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		ln.setBounds(165, 47, 62, 16);
+		applications.add(ln);
 		
-				back.setVisible(false);
+		ln.setBounds(150, 47, 92, 16);
+		ln.setForeground(new Color(255,132,124));
+		applications.add(ln);
+		back.setVisible(false);
 		applications.add(back);
 		
 			
@@ -134,7 +169,7 @@ JLabel fn = new JLabel("First Name");
 		
 		
 		
-		changepass.setBounds(800, 87, 616, 407);
+		changepass.setBounds(800, 87, 774, 407);
 		layeredPane.add(changepass);
 		changepass.setBackground(new Color(57,62,70));
 		changepass.setVisible(false);
@@ -204,36 +239,8 @@ JLabel fn = new JLabel("First Name");
 		contentPane.add(lblNewLabel_1);
 		
 		
-		ov.setBounds(0, 236, 252, 49);
-		ov.setBackground(new Color(130,115,151));
-		contentPane.add(ov);
-		ov.setLayout(null);
-		
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setForeground(Color.BLACK);
-		lblNewLabel_2.setIcon(new ImageIcon(AgentDashBoard.class.getResource("/img/overview.png")));
-		lblNewLabel_2.setBounds(0, 0, 61, 49);
-		ov.add(lblNewLabel_2);
-		
-		JLabel lblNewLabel_3 = new JLabel("Overview");
-		lblNewLabel_3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				panelChange(current_panel);
-				ov.setBackground(new Color(130,115,151));
-				current_panel = "overview";
-				overview.setVisible(true);
-			}
-		});
-		lblNewLabel_3.setForeground(Color.BLACK);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_3.setBackground(Color.BLACK);
-		lblNewLabel_3.setBounds(73, 0, 181, 49);
-		ov.add(lblNewLabel_3);
-		
-		
 		mc.setBounds(0, 286, 252, 52);
-		mc.setBackground(new Color(255,255,255));
+		mc.setBackground(new Color(130,115,151));
 		contentPane.add(mc);
 		mc.setLayout(null);
 		
@@ -267,7 +274,7 @@ JLabel fn = new JLabel("First Name");
 		
 		// Pull Client DataBase
 		String client_file = "client";
-		ArrayList <NewClient> newclient = new ArrayList<>();
+		
 		// Try to pull the file name "client"
 		try {
 					// agent file exists
@@ -287,12 +294,339 @@ JLabel fn = new JLabel("First Name");
 			System.out.println("NewClient Class not Found");
 		}
 		
-		double pages = Math.ceil(newclient.size()/5);
+		int pages = (int) Math.ceil(newclient.size()/5) + 1;
 		size.setText(current_page + "/" +pages);
 		
+		JLabel dob = new JLabel("DOB");
+		dob.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		dob.setBounds(295, 46, 56, 16);
+		dob.setForeground(new Color(255,132,124));
+		
+		
+		JLabel make = new JLabel("Make");
+		make.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		make.setBounds(406, 46, 56, 16);
+		make.setForeground(new Color(255,132,124));
+		applications.add(make);
+		
+		JLabel year = new JLabel("Year");
+		year.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		year.setBounds(492, 46, 56, 16);
+		year.setForeground(new Color(255,132,124));
+		JLabel cl = new JLabel("Current Liability");
+		cl.setForeground(new Color(255,132,124));
+		cl.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		cl.setBounds(570, 46, 124, 16);
+		applications.add(cl);
+		applications.add(year);
+		applications.add(dob);
+		
+		first1 = new JTextField();
+		first1.setEditable(false);
+		first1.setBounds(25, 89, 97, 22);
+		applications.add(first1);
+		first1.setColumns(10);
+		
+		last1 = new JTextField();
+		last1.setEditable(false);
+		last1.setBounds(150, 89, 108, 22);
+		applications.add(last1);
+		last1.setColumns(10);
+		
+		dob1 = new JTextField();
+		dob1.setEditable(false);
+		dob1.setBounds(270, 89, 97, 22);
+		applications.add(dob1);
+		dob1.setColumns(10);
+		
+		make1 = new JTextField();
+		make1.setEditable(false);
+		make1.setBounds(391, 89, 71, 22);
+		applications.add(make1);
+		make1.setColumns(10);
+		
+		year1 = new JTextField();
+		year1.setEditable(false);
+		year1.setBounds(474, 89, 81, 22);
+		applications.add(year1);
+		year1.setColumns(10);
+		
+		cl1 = new JTextField();
+		cl1.setEditable(false);
+		cl1.setBounds(570, 89, 116, 22);
+		applications.add(cl1);
+		cl1.setColumns(10);
+		
+		JButton view1 = new JButton("View");
+		
+		view1.setBounds(698, 88, 71, 25);
+		applications.add(view1);
+		
+		first2 = new JTextField();
+		first2.setEditable(false);
+		first2.setColumns(10);
+		first2.setBounds(25, 144, 97, 22);
+		applications.add(first2);
+		
+		last2 = new JTextField();
+		last2.setEditable(false);
+		last2.setColumns(10);
+		last2.setBounds(150, 144, 108, 22);
+		applications.add(last2);
+		
+		dob2 = new JTextField();
+		dob2.setEditable(false);
+		dob2.setColumns(10);
+		dob2.setBounds(270, 144, 97, 22);
+		applications.add(dob2);
+		
+		make2 = new JTextField();
+		make2.setEditable(false);
+		make2.setColumns(10);
+		make2.setBounds(391, 144, 71, 22);
+		applications.add(make2);
+		
+		year2 = new JTextField();
+		year2.setEditable(false);
+		year2.setColumns(10);
+		year2.setBounds(474, 144, 81, 22);
+		applications.add(year2);
+		
+		cl2 = new JTextField();
+		cl2.setEditable(false);
+		cl2.setColumns(10);
+		cl2.setBounds(570, 144, 116, 22);
+		applications.add(cl2);
+		
+		JButton view2 = new JButton("View");
+		view2.setBounds(698, 143, 71, 25);
+		applications.add(view2);
+		
+		first3 = new JTextField();
+		view2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Do something
+				
+			}
+		});
+		first3.setEditable(false);
+		first3.setColumns(10);
+		first3.setBounds(25, 193, 97, 22);
+		applications.add(first3);
+		
+		last3 = new JTextField();
+		last3.setEditable(false);
+		last3.setColumns(10);
+		last3.setBounds(150, 193, 108, 22);
+		applications.add(last3);
+		
+		dob3 = new JTextField();
+		dob3.setEditable(false);
+		dob3.setColumns(10);
+		dob3.setBounds(270, 193, 97, 22);
+		applications.add(dob3);
+		
+		make3 = new JTextField();
+		make3.setEditable(false);
+		make3.setColumns(10);
+		make3.setBounds(391, 193, 71, 22);
+		applications.add(make3);
+		
+		year3 = new JTextField();
+		year3.setEditable(false);
+		year3.setColumns(10);
+		year3.setBounds(474, 193, 81, 22);
+		applications.add(year3);
+		
+		cl3 = new JTextField();
+		cl3.setEditable(false);
+		cl3.setColumns(10);
+		cl3.setBounds(570, 193, 116, 22);
+		applications.add(cl3);
+		
+		JButton view3 = new JButton("View");
+		view3.setBounds(698, 192, 71, 25);
+		applications.add(view3);
+		
+		first4 = new JTextField();
+		first4.setEditable(false);
+		first4.setColumns(10);
+		first4.setBounds(25, 240, 97, 22);
+		applications.add(first4);
+		
+		last4 = new JTextField();
+		last4.setEditable(false);
+		last4.setColumns(10);
+		last4.setBounds(150, 240, 108, 22);
+		applications.add(last4);
+		
+		dob4 = new JTextField();
+		dob4.setEditable(false);
+		dob4.setColumns(10);
+		dob4.setBounds(270, 240, 97, 22);
+		applications.add(dob4);
+		
+		make4 = new JTextField();
+		make4.setEditable(false);
+		make4.setColumns(10);
+		make4.setBounds(391, 240, 71, 22);
+		applications.add(make4);
+		
+		year4 = new JTextField();
+		year4.setEditable(false);
+		year4.setColumns(10);
+		year4.setBounds(474, 240, 81, 22);
+		applications.add(year4);
+		
+		cl4 = new JTextField();
+		cl4.setEditable(false);
+		cl4.setColumns(10);
+		cl4.setBounds(570, 240, 116, 22);
+		applications.add(cl4);
+		
+		JButton view4 = new JButton("View");
+		view4.setBounds(698, 239, 71, 25);
+		applications.add(view4);
+		
+		first5 = new JTextField();
+		first5.setEditable(false);
+		first5.setColumns(10);
+		first5.setBounds(25, 281, 97, 22);
+		applications.add(first5);
+		
+		last5 = new JTextField();
+		last5.setEditable(false);
+		last5.setColumns(10);
+		last5.setBounds(150, 281, 108, 22);
+		applications.add(last5);
+		
+		dob5 = new JTextField();
+		dob5.setEditable(false);
+		dob5.setColumns(10);
+		dob5.setBounds(270, 281, 97, 22);
+		applications.add(dob5);
+		
+		make5 = new JTextField();
+		make5.setEditable(false);
+		make5.setColumns(10);
+		make5.setBounds(391, 281, 71, 22);
+		applications.add(make5);
+		
+		year5 = new JTextField();
+		year5.setEditable(false);
+		year5.setColumns(10);
+		year5.setBounds(474, 281, 81, 22);
+		applications.add(year5);
+		
+		cl5 = new JTextField();
+		cl5.setEditable(false);
+		cl5.setColumns(10);
+		cl5.setBounds(570, 281, 116, 22);
+		applications.add(cl5);
+		
+		JButton view5 = new JButton("View");
+		view5.setBounds(698, 280, 71, 25);
+		applications.add(view5);
+		
+		view1.setBackground(new Color(255,189,105));
+		view2.setBackground(new Color(255,189,105));
+		view3.setBackground(new Color(255,189,105));
+		view4.setBackground(new Color(255,189,105));
+		view5.setBackground(new Color(255,189,105));
+		
+		applications.add(view1);
+		
+		applications.add(cl);
+		applications.add(year);
+		applications.add(dob);
+		
+		if(current_page == pages) {
+			next.setVisible(false);
+		}
+		if(current_page == 1) {
+			back.setVisible(false);
+		}
 		if(current_page > 1) {
 			back.setVisible(true);
 		}
+		
+		// To increment and assign to TextField.
+		int clientdb_size = newclient.size();
+		int max_idx = (int) ((current_page * 5) - 5);
+		
+		for(int i = 0; i<5; i++) {
+			if(clientdb_size == max_idx) {
+				break;
+			}
+			else {
+			switch(i) {
+			case 0:
+				idx_1 = max_idx;
+				first1.setText(newclient.get(idx_1).firstname);
+				last1.setText(newclient.get(idx_1).lastname);
+				dob1.setText(newclient.get(idx_1).client_dob);
+				make1.setText(newclient.get(idx_1).vehyear);
+				year1.setText(newclient.get(idx_1).vehyear);
+				cl1.setText(newclient.get(idx_1).vehcic);
+				max_idx++;
+				break;
+				
+			case 1:
+				idx_2 = max_idx;
+				first2.setText(newclient.get(idx_2).firstname);
+				last2.setText(newclient.get(idx_2).lastname);
+				dob2.setText(newclient.get(idx_2).client_dob);
+				make2.setText(newclient.get(idx_2).vehyear);
+				year2.setText(newclient.get(idx_2).vehyear);
+				cl2.setText(newclient.get(idx_2).vehcic);
+				max_idx++;
+				break;
+				
+			case 2:
+				idx_3 = max_idx;
+				first3.setText(newclient.get(idx_3).firstname);
+				last3.setText(newclient.get(idx_3).lastname);
+				dob3.setText(newclient.get(idx_3).client_dob);
+				make3.setText(newclient.get(idx_3).vehyear);
+				year3.setText(newclient.get(idx_3).vehyear);
+				cl3.setText(newclient.get(idx_3).vehcic);
+				max_idx++;
+				break;
+				
+			case 3:
+				idx_4 = max_idx;
+				first4.setText(newclient.get(idx_4).firstname);
+				last4.setText(newclient.get(idx_4).lastname);
+				dob4.setText(newclient.get(idx_4).client_dob);
+				make4.setText(newclient.get(idx_4).vehyear);
+				year4.setText(newclient.get(idx_4).vehyear);
+				cl4.setText(newclient.get(idx_4).vehcic);
+				max_idx++;
+				break;
+				
+			case 4:
+				idx_5 = max_idx;
+				first5.setText(newclient.get(idx_5).firstname);
+				last5.setText(newclient.get(idx_5).lastname);
+				dob5.setText(newclient.get(idx_5).client_dob);
+				make5.setText(newclient.get(idx_5).vehyear);
+				year5.setText(newclient.get(idx_5).vehyear);
+				cl5.setText(newclient.get(idx_5).vehcic);
+				max_idx++;
+				break;
+				
+			}
+			}
+		
+		}
+		
+		view1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Do something
+				ShowClientForm scf = new ShowClientForm(idx_1, newagent, newclient, idx);
+				scf.setVisible(true);
+			}
+		});
 		
 		
 		
@@ -306,6 +640,7 @@ JLabel fn = new JLabel("First Name");
 		lblNewLabel_8.setBounds(0, 0, 63, 55);
 		st.add(lblNewLabel_8);
 		
+		// Change Password Panel
 		JLabel lblNewLabel_9 = new JLabel("Change Password");
 		lblNewLabel_9.addMouseListener(new MouseAdapter() {
 			@Override
@@ -333,11 +668,7 @@ JLabel fn = new JLabel("First Name");
 	}
 	
 	private void panelChange(String current_panel) {
-		if(current_panel.equals("overview")) {
-			ov.setBackground(new Color(255,255,255));
-			overview.setVisible(false);
-		}
-		else if(current_panel.equals("customers")) {
+		if(current_panel.equals("customers")) {
 			c.setBackground(new Color(255,255,255));
 		}
 		else if(current_panel.equals("clients")) {

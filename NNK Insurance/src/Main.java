@@ -156,12 +156,13 @@ public class Main extends JFrame {
 							JOptionPane.showMessageDialog(null, "NewClient Class is not Found");
 						}
 						
+						int counter = 0;
 						for(NewClient client: newclient) {
 							// usrname and password matched.
 							if(client.netID.equals(usrname) && client.netpass.equals(passwrd)) {
 								if(client.status.equals("Pending")) {
 									dispose();
-									Pending pending = new Pending(client.lastname);
+									Pending pending = new Pending(client, counter);
 									pending.setVisible(true);
 								}
 								else {
