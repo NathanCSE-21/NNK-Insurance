@@ -174,6 +174,7 @@ public class Pending extends JFrame {
 						net_prop.load(input);
 					}catch(IOException ioe) {
 						// agentID.properties doesn't exists
+						net_prop.setProperty("Total", "0");
 					}
 					
 					String total = (String) net_prop.get("Total");
@@ -187,6 +188,7 @@ public class Pending extends JFrame {
 						else {
 							int count = Integer.parseInt(total) + 1;
 							net_prop.setProperty("Total", String.valueOf(count));
+							
 						}
 						
 						OutputStream output = new FileOutputStream(key +".properties");
@@ -196,14 +198,68 @@ public class Pending extends JFrame {
 					}catch(IOException ioe) {
 						System.out.println("Failed to add this client into agent property.");
 					}
+					
+					
+					String nclient_file = key;
+					ArrayList <NewClient> update_client = new ArrayList<>();
+					
+					NewClient new_client = new NewClient(newclient.firstname, newclient.lastname,  newclient.client_email,  newclient.client_phone,  newclient.client_city ,
+							 newclient.client_state,  newclient.client_dob,  newclient.client_sex,
+							 newclient.client_marital,  newclient.client_ssn,
+							 newclient.vehyear,  newclient.vehyear1,  newclient.vehmake,
+							 newclient.vehmake1,
+							 newclient.vehmodel,
+							 newclient.vehmodel1,
+							 newclient.vehvin,
+							 newclient.vehvin1,
+							 newclient.vehdriver,
+							 newclient.vehdriver1,
+							 newclient.vehnot,
+							 newclient.vehci,
+							 newclient.vehcic,
+							 newclient.vehcll,  newclient.netID,  newclient.netpass , "Accepted - Agent" + key);
+					
+					// Try to pull the name of "agentID"
+					try {
+						// agent file exists
+						FileInputStream fis = new FileInputStream(nclient_file);
+						ObjectInputStream ois = new ObjectInputStream(fis);
+						
+						update_client = (ArrayList<NewClient>) ois.readObject();
+						
+						fis.close();
+						ois.close();
+					}catch(IOException exception) {
+						// agent file doesn't exists.
+						//System.out.println("Agent File doesn't exists");
+						
+					}catch(ClassNotFoundException e1) {
+						System.out.println("NewClient Class not Found");
+					}
+					update_client.add(new_client);
+					
+					try {
+						FileOutputStream fos = new FileOutputStream(nclient_file);
+			            ObjectOutputStream oos = new ObjectOutputStream(fos);
+			            
+			            oos.writeObject(update_client);
+			            oos.flush();
+			            oos.close();
+			            fos.close();
+			            
+			            
+					}catch(IOException ioe) {
+						// Do nothing for now because
+						// we assume file exists.
+					}
 				}
 			});
 			
 			
 			String client_file = "client";
-			String nclient_file = key;
+			
 			ArrayList <NewClient> old_client = new ArrayList<>();
-			ArrayList <NewClient> update_client = new ArrayList<>();
+			
 			
 			// Try to pull the file name "client"
 			try {
@@ -225,40 +281,6 @@ public class Pending extends JFrame {
 				System.out.println("NewClient Class not Found");
 			}
 			
-			NewClient new_client = new NewClient(newclient.firstname, newclient.lastname,  newclient.client_email,  newclient.client_phone,  newclient.client_city ,
-					 newclient.client_state,  newclient.client_dob,  newclient.client_sex,
-					 newclient.client_marital,  newclient.client_ssn,
-					 newclient.vehyear,  newclient.vehyear1,  newclient.vehmake,
-					 newclient.vehmake1,
-					 newclient.vehmodel,
-					 newclient.vehmodel1,
-					 newclient.vehvin,
-					 newclient.vehvin1,
-					 newclient.vehdriver,
-					 newclient.vehdriver1,
-					 newclient.vehnot,
-					 newclient.vehci,
-					 newclient.vehcic,
-					 newclient.vehcll,  newclient.netID,  newclient.netpass , "Accepted - Agent" + key);
-			
-			// Try to pull the name of "agentID"
-			try {
-				// agent file exists
-				FileInputStream fis = new FileInputStream(nclient_file);
-				ObjectInputStream ois = new ObjectInputStream(fis);
-				
-				update_client = (ArrayList<NewClient>) ois.readObject();
-				
-				fis.close();
-				ois.close();
-			}catch(IOException exception) {
-				// agent file doesn't exists.
-				//System.out.println("Agent File doesn't exists");
-				
-			}catch(ClassNotFoundException e1) {
-				System.out.println("NewClient Class not Found");
-			}
-			update_client.add(new_client);
 			
 			try {
 				// add to client file

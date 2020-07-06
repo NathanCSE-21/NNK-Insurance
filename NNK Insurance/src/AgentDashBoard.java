@@ -44,6 +44,9 @@ public class AgentDashBoard extends JFrame {
 	private JPanel applications = new JPanel();
 	private JPanel myclient = new JPanel();
 	
+
+	private int myc_current = 1;
+	
 	private double current_page = 1;
 	private JTextField first1;
 	private JTextField last1;
@@ -751,9 +754,8 @@ public class AgentDashBoard extends JFrame {
 		Set<Object> keys = null;
 		double total_keys = -1 ;
 		int myc_pages = -1;
-		int myc_current = 1;
 		try {
-			//Email database exists
+			//Client database exists
 			InputStream input = new FileInputStream(file_name + ".properties");
 			
 			//load a properties file
@@ -761,7 +763,6 @@ public class AgentDashBoard extends JFrame {
 			
 			keys = agent_prop.keySet();
 			// Sort the Set of Objects and remove the "Total" object.
-			
 			
 			
 			for(Object k: keys) {
@@ -772,10 +773,8 @@ public class AgentDashBoard extends JFrame {
 				}
 			}
 			
-			total_keys = keys.size();
-			
-			myc_pages = (int) (Math.ceil(total_keys/5) + 1);
-			
+			total_keys = keys.size()-1;
+			myc_pages = (int) (Math.ceil(total_keys/5));
 		}catch(IOException ioe) {
 			// Failed
 		}
@@ -784,7 +783,7 @@ public class AgentDashBoard extends JFrame {
 		if(myc_pages > myc_current ) {
 			nextbtn.setVisible(true);
 		}
-		else {
+		if(myc_current ==myc_pages) {
 			nextbtn.setVisible(false);
 		}
 		if(myc_current > 1) {
@@ -795,86 +794,77 @@ public class AgentDashBoard extends JFrame {
 		}
 		
 		int maxc_idx = (int) ((myc_pages * 5) - 5);
+		String nclient_file = newagent.get(idx).netid;
+		ArrayList <NewClient> client = null;
+		// Try to pull the name of "agentID"
+		try {
+			// agent file exists
+			FileInputStream fis = new FileInputStream(nclient_file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			
+			client = (ArrayList<NewClient>) ois.readObject();
+			
+			fis.close();
+			ois.close();
+		}catch(IOException exception) {
+			// agent file doesn't exists.
+			//System.out.println("Agent File doesn't exists");
+			
+		}catch(ClassNotFoundException e1) {
+			System.out.println("NewClient Class not Found");
+		}
+		
+		
 		for(int i = 0; i<5; i++) {
-			if(total_keys == maxc_idx | keys == null) {
+			if(total_keys == maxc_idx || client ==null ) {
 				break;
 			}
 			else {
 			switch(i) {
 			case 0:
-				for(NewClient client: newclient) {
-					for(Object k : keys) {
-						String key = (String) k;
-						if(key == client.netID) {
-							client1.setText(client.firstname + " " + client.lastname);
-							premium1.setText(agent_prop.getProperty(key));
-						}
-					}
-					break; // break because we would exhaust all the keys by this point.
-				}
+				client1.setText(client.get(maxc_idx).firstname + " " + client.get(maxc_idx).lastname);
+				premium1.setText(agent_prop.getProperty(client.get(maxc_idx).netID));
 				maxc_idx++;
 				break;
 				
 			case 1:
-				for(NewClient client: newclient) {
-					for(Object k : keys) {
-						String key = (String) k;
-						if(key == client.netID) {
-							client2.setText(client.firstname + " " + client.lastname);
-							premium2.setText(agent_prop.getProperty(key));
-						}
-					}
-					break;
-					}
+				client2.setText(client.get(maxc_idx).firstname + " " + client.get(maxc_idx).lastname);
+				premium2.setText(agent_prop.getProperty(client.get(maxc_idx).netID));
 				maxc_idx++;
 				break;
 				
 			case 2:
-				for(NewClient client: newclient) {
-					for(Object k : keys) {
-						String key = (String) k;
-						if(key == client.netID) {
-							client3.setText(client.firstname + " " + client.lastname);
-							premium3.setText(agent_prop.getProperty(key));
-						}
-					}
-					break;}
+				client3.setText(client.get(maxc_idx).firstname + " " + client.get(maxc_idx).lastname);
+				premium3.setText(agent_prop.getProperty(client.get(maxc_idx).netID));
 				maxc_idx++;
 				break;
 				
 			case 3:
-				for(NewClient client: newclient) {
-					for(Object k : keys) {
-						String key = (String) k;
-						if(key == client.netID) {
-							client4.setText(client.firstname + " " + client.lastname);
-							premium4.setText(agent_prop.getProperty(key));
-						}
-					}
-					break;
-					}
+				client4.setText(client.get(maxc_idx).firstname + " " + client.get(maxc_idx).lastname);
+				premium4.setText(agent_prop.getProperty(client.get(maxc_idx).netID));
 				maxc_idx++;
 				break;
 				
 			case 4:
-				for(NewClient client: newclient) {
-					for(Object k : keys) {
-						String key = (String) k;
-						if(key == client.netID) {
-							client5.setText(client.firstname + " " + client.lastname);
-							premium5.setText(agent_prop.getProperty(key));
-						}
-					}
-					break;
-					}
+				client5.setText(client.get(maxc_idx).firstname + " " + client.get(maxc_idx).lastname);
+				premium5.setText(agent_prop.getProperty(client.get(maxc_idx).netID));
 				maxc_idx++;
 				break;
 				
 			}
 			}
-		
 		}
 		
+		backbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				myc_current--;
+			}
+		});
+		nextbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				myc_current++;
+			}
+		});
 		
 		view1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
