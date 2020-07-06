@@ -119,6 +119,40 @@ public class Pending extends JFrame {
 			contentPane.add(accept);
 			
 			JButton reject = new JButton("Reject");
+			reject.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Properties net_prop = new Properties();
+					
+					// Pull agentID.properties to see if it exists
+					try {
+						InputStream input = new FileInputStream(key + ".properties");
+						
+						net_prop.load(input);
+					}catch(IOException ioe) {
+						// agentID.properties doesn't exists
+					}
+					
+					String total = (String) net_prop.get("Total");
+					// add in 
+					// client.netid , price as property inside the agentid.properties file.
+					try {
+						if(total == "null") {
+							net_prop.setProperty("Total", "0");
+						}
+						else {
+							int count = Integer.parseInt(total) + 1;
+							net_prop.setProperty("Total", String.valueOf(count));
+						}
+						
+						OutputStream output = new FileOutputStream(key +".properties");
+						
+						net_prop.store(output , null);
+					}catch(IOException ioe) {
+						System.out.println("Failed to add this client into agent property.");
+					}
+					
+				}
+			});
 			reject.setBounds(387, 236, 97, 25);
 			reject.setFocusPainted(false);
 			reject.setBackground(new Color(199,0,57));
@@ -128,11 +162,12 @@ public class Pending extends JFrame {
 			
 			price.setText("Your Premium is: " + premium_price);
 			
+			// If client accept the premium
 			accept.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Properties net_prop = new Properties();
 					
-					// Pul agentID.properties to see if it exists
+					// Pull agentID.properties to see if it exists
 					try {
 						InputStream input = new FileInputStream(key + ".properties");
 						
@@ -141,7 +176,19 @@ public class Pending extends JFrame {
 						// agentID.properties doesn't exists
 					}
 					
+					String total = (String) net_prop.get("Total");
+					
+					// add in 
+					// client.netid , price as property inside the agentid.properties file.
 					try {
+						if(total == "null" || total == "Null") {
+							net_prop.setProperty("Total", "0");
+						}
+						else {
+							int count = Integer.parseInt(total) + 1;
+							net_prop.setProperty("Total", String.valueOf(count));
+						}
+						
 						OutputStream output = new FileOutputStream(key +".properties");
 						net_prop.setProperty(newclient.netID, premium_price);
 					
@@ -154,7 +201,9 @@ public class Pending extends JFrame {
 			
 			
 			String client_file = "client";
-			ArrayList <NewClient> updateclient = new ArrayList<>();
+			String nclient_file = key;
+			ArrayList <NewClient> old_client = new ArrayList<>();
+			ArrayList <NewClient> update_client = new ArrayList<>();
 			
 			// Try to pull the file name "client"
 			try {
@@ -162,10 +211,12 @@ public class Pending extends JFrame {
 				FileInputStream fis = new FileInputStream(client_file);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				
-				updateclient = (ArrayList<NewClient>) ois.readObject();
+				old_client = (ArrayList<NewClient>) ois.readObject();
 				
 				fis.close();
 				ois.close();
+				
+				old_client.remove(counter);
 			}catch(IOException exception) {
 				// agent file doesn't exists.
 				//System.out.println("Agent File doesn't exists");
@@ -190,14 +241,31 @@ public class Pending extends JFrame {
 					 newclient.vehcic,
 					 newclient.vehcll,  newclient.netID,  newclient.netpass , "Accepted - Agent" + key);
 			
-			updateclient.add(new_client);
+			// Try to pull the name of "agentID"
+			try {
+				// agent file exists
+				FileInputStream fis = new FileInputStream(nclient_file);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				
+				update_client = (ArrayList<NewClient>) ois.readObject();
+				
+				fis.close();
+				ois.close();
+			}catch(IOException exception) {
+				// agent file doesn't exists.
+				//System.out.println("Agent File doesn't exists");
+				
+			}catch(ClassNotFoundException e1) {
+				System.out.println("NewClient Class not Found");
+			}
+			update_client.add(new_client);
 			
 			try {
 				// add to client file
 				FileOutputStream fos = new FileOutputStream(client_file);
 				ObjectOutputStream oos = new ObjectOutputStream(fos);
 				
-				oos.writeObject(updateclient);
+				oos.writeObject(old_client);
 				
 				oos.flush();
 				oos.close();

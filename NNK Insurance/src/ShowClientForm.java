@@ -405,8 +405,6 @@ public class ShowClientForm extends JFrame {
 				
 				Properties email_prop = new Properties();
 				try{
-					System.out.println("I'm here");
-					System.out.println(file_name);
 					
 					// Email database exists
 					InputStream input = new FileInputStream(file_name + ".properties");

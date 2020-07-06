@@ -201,7 +201,6 @@ public class Main extends JFrame {
 						for(NewAgent agent: newagent) {
 							// usrname and password matched.
 							if(agent.netid.equals(usrname) && agent.netpassword.equals(passwrd)) {
-								// Found
 								break;
 							}
 							idx++;
